@@ -1,5 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports #-}
 
 module CSV2Ledger
   ( FormatSpec(..), defaultFormatSpec, dropUtf8BOM, loadCsvFiles
@@ -9,7 +10,7 @@ module CSV2Ledger
   )
   where
 
-import Prelude.Compat
+import "base-compat" Prelude.Compat
 
 import Control.Monad as M
 import Data.ByteString.Lazy as BS ( ByteString, pack, stripPrefix )
