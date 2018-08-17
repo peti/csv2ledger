@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module CSV2Ledger
@@ -7,6 +8,8 @@ module CSV2Ledger
   , mkTag, (=~), postLiability, postLiability'
   )
   where
+
+import Prelude.Compat
 
 import Control.Monad as M
 import Data.ByteString.Lazy as BS ( ByteString, pack, stripPrefix )
