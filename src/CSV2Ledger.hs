@@ -7,12 +7,14 @@ module CSV2Ledger
   , euro, postExpense, postIncome, postExpense', postIncome'
   , simplePosting, isIncomeTransaction, isExpenseTransaction
   , mkTag, (=~), postLiability, postLiability'
+  , simpleMain, pCurrency, parseAmount
   )
   where
 
 import "base-compat" Prelude.Compat
 
 import Control.Monad as M
+import Control.Monad.State.Strict
 import Data.ByteString.Lazy as BS ( ByteString, pack, stripPrefix )
 import Data.ByteString.Lazy.UTF8 as BS ( fromString )
 import Data.Decimal
@@ -21,8 +23,11 @@ import Data.Maybe
 import Data.Text as T ( Text, null, unpack )
 import Data.Vector as V ( Vector, toList )
 import Hledger.Data
+import Hledger.Read
 import Hledger.Utils.Regex
+import System.Environment
 import System.IO as IO
+import qualified Text.Megaparsec as Parsec ( runParser, eof )
 
 data FormatSpec a = FormatSpec
   { filenameOrder :: FilePath -> FilePath -> Ordering
@@ -107,3 +112,15 @@ loadCsvFiles format files = do
         Left err -> fail err
         Right rs -> return (V.toList rs)
   return $ sortOn tdate (map (toTransaction format) (nub (concat ts')))
+
+simpleMain :: Eq a => FormatSpec a -> IO ()
+simpleMain fmt = getArgs >>= loadCsvFiles fmt >>= mapM_ (putStr . show)
+
+pCurrency :: String -> Text -> Text -> Amount
+pCurrency ctx curr amt = parseAmount ctx (curr <> " " <> amt)
+
+parseAmount :: String -> Text -> Amount
+parseAmount ctx input =
+  case Parsec.runParser (evalStateT (amountp <* Parsec.eof) mempty) ctx input of
+     Left  _ -> error ("invalid amount  " <> show (T.unpack input) <> ", context " <> show ctx)
+     Right r -> r

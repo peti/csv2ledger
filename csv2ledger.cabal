@@ -20,6 +20,8 @@ library
                   , base-compat > 0.9
                   , bytestring
                   , hledger-lib >= 1.10
+                  , megaparsec
+                  , mtl
                   , text
                   , utf8-string
                   , vector
