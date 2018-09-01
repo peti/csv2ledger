@@ -13,8 +13,8 @@ build-type:    Simple
 cabal-version: >= 1.10
 
 library
-  exposed-modules:  CSV2Ledger
-                    CSV2Ledger.Camt
+  exposed-modules:  Csv2Ledger
+                    Csv2Ledger.Camt
   hs-source-dirs:   src
   build-depends:    base        < 5
                   , Decimal

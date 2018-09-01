@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports #-}
 
-module CSV2Ledger
+module Csv2Ledger
   ( FormatSpec(..), defaultFormatSpec, dropUtf8BOM, loadCsvFiles
   , euro, postExpense, postIncome, postExpense', postIncome'
   , simplePosting, isIncomeTransaction, isExpenseTransaction

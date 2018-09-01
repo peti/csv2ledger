@@ -4,9 +4,9 @@
 
 -- | Parse the CSV CAMT format for \"cash management\".
 
-module CSV2Ledger.Camt where
+module Csv2Ledger.Camt where
 
-import CSV2Ledger
+import Csv2Ledger
 
 import Data.ByteString.Lazy as BSL
 import Data.Char
