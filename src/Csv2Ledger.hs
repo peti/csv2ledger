@@ -114,7 +114,7 @@ loadCsvFiles format files = do
   return $ sortOn tdate (map (toTransaction format) (nub (concat ts')))
 
 simpleMain :: Eq a => FormatSpec a -> IO ()
-simpleMain fmt = getArgs >>= loadCsvFiles fmt >>= mapM_ (putStr . show)
+simpleMain fmt = getArgs >>= loadCsvFiles fmt >>= mapM_ (putStr . showTransaction)
 
 pCurrency :: String -> Text -> Text -> Amount
 pCurrency ctx curr amt = parseAmount ctx (curr <> " " <> amt)
