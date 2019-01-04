@@ -6,7 +6,7 @@ module Csv2Ledger
   ( FormatSpec(..), defaultFormatSpec, dropUtf8BOM, loadCsvFiles
   , euro, postExpense, postIncome, postExpense', postIncome'
   , simplePosting, isIncomeTransaction, isExpenseTransaction
-  , mkTag, (=~), postLiability, postLiability'
+  , mkTag, (=~), postLiability, postLiability', collapsSpace
   , simpleMain, pCurrency, parseAmount
   )
   where
@@ -20,7 +20,8 @@ import Data.ByteString.Lazy.UTF8 as BS ( fromString )
 import Data.Decimal
 import Data.List ( nub, sortOn, sortBy )
 import Data.Maybe
-import Data.Text as T ( Text, null, unpack )
+import Data.Text ( Text )
+import qualified Data.Text as T
 import Data.Vector as V ( Vector, toList )
 import Hledger.Data
 import Hledger.Read
@@ -124,3 +125,6 @@ parseAmount ctx input =
   case Parsec.runParser (evalStateT (amountp <* Parsec.eof) mempty) ctx input of
      Left  _ -> error ("invalid amount  " <> show (T.unpack input) <> ", context " <> show ctx)
      Right r -> r { astyle = amountstyle { asprecision=2, ascommodityspaced=True } }
+
+collapsSpace :: Text -> Text
+collapsSpace = T.unwords . T.words . T.strip
