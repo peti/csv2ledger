@@ -6,7 +6,7 @@ license:       BSD3
 license-file:  LICENSE
 author:        Peter Simons
 maintainer:    simons@cryp.to
-tested-with:   GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.5, GHC == 8.8.1
+tested-with:   GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.5, GHC == 8.8.3, GHC == 8.10.1
 category:      Finance
 homepage:      https://github.com/peti/csv2ledger
 build-type:    Simple
