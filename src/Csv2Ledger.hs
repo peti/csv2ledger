@@ -122,7 +122,7 @@ pCurrency ctx curr amt = parseAmount ctx (curr <> " " <> amt)
 
 parseAmount :: String -> Text -> Amount
 parseAmount ctx input =
-  case Parsec.runParser (evalStateT (amountp <* Parsec.eof) mempty) ctx input of
+  case Parsec.runParser (evalStateT (amountp <* Parsec.eof) nulljournal) ctx input of
      Left  _ -> error ("invalid amount  " <> show (T.unpack input) <> ", context " <> show ctx)
      Right r -> r { astyle = amountstyle { asprecision=2, ascommodityspaced=True } }
 
