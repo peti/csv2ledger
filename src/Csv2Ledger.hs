@@ -19,6 +19,7 @@ import Data.ByteString.Lazy as BS ( ByteString, pack, stripPrefix )
 import Data.ByteString.Lazy.UTF8 as BS ( fromString )
 import Data.Decimal
 import Data.List ( nub, sortOn, sortBy )
+import Data.String ( IsString(..) )
 import Data.Maybe
 import Data.Text ( Text )
 import qualified Data.Text as T
@@ -99,6 +100,8 @@ isExpenseTransaction t = all (fromMaybe err . isNegativeMixedAmount . pamount) (
 mkTag :: Text -> Text -> [Text]
 mkTag tag content = [tag <> ": " <> content | not (T.null content) ]
 
+-- |A convenient variant of 'regexMatch' that copes with 'Text' rather than
+-- 'String' data.
 (=~) :: Text -> Regexp -> Bool
 str =~ regexp = regexMatch regexp (T.unpack str)
 
@@ -109,7 +112,7 @@ loadCsvFiles format files = do
       hSetEncoding h (fileEncoding format)
       _ <- M.replicateM (skipLines format) (hGetLine h)
       buf <- IO.hGetContents h
-      case decodeCSV format (dropUtf8BOM (fromString buf)) of
+      case decodeCSV format (dropUtf8BOM (BS.fromString buf)) of
         Left err -> fail err
         Right rs -> return (V.toList rs)
   return $ sortOn tdate (map (toTransaction format) (nub (concat ts')))
@@ -128,3 +131,6 @@ parseAmount ctx input =
 
 collapsSpace :: Text -> Text
 collapsSpace = T.unwords . T.words . T.strip
+
+instance IsString Regexp where
+  fromString = toRegexCI'
