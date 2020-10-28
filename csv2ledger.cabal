@@ -21,7 +21,7 @@ library
                   , base-compat > 0.9
                   , bytestring
                   , cassava
-                  , hledger-lib >= 1.17
+                  , hledger-lib >= 1.19.1
                   , megaparsec
                   , mtl
                   , text

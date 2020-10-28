@@ -58,7 +58,7 @@ dropUtf8BOM x = fromMaybe x (stripPrefix bom x)
 euro :: Decimal -> Amount
 euro n = amount { acommodity = "EUR"
                 , aquantity = roundTo 2 n
-                , astyle = amountstyle { asprecision=2, ascommodityspaced=True }
+                , astyle = amountstyle { asprecision = Precision 2, ascommodityspaced = True }
                 }
 
 postExpense :: AccountName -> Transaction -> Posting
@@ -100,7 +100,7 @@ mkTag :: Text -> Text -> [Text]
 mkTag tag content = [tag <> ": " <> content | not (T.null content) ]
 
 (=~) :: Text -> Regexp -> Bool
-str =~ regexp = regexMatchesCI regexp (T.unpack str)
+str =~ regexp = regexMatch regexp (T.unpack str)
 
 loadCsvFiles :: Eq a => FormatSpec a -> [FilePath] -> IO [Transaction]
 loadCsvFiles format files = do
@@ -124,7 +124,7 @@ parseAmount :: String -> Text -> Amount
 parseAmount ctx input =
   case Parsec.runParser (evalStateT (amountp <* Parsec.eof) nulljournal) ctx input of
      Left  _ -> error ("invalid amount  " <> show (T.unpack input) <> ", context " <> show ctx)
-     Right r -> r { astyle = amountstyle { asprecision=2, ascommodityspaced=True } }
+     Right r -> r { astyle = amountstyle { asprecision = Precision 2, ascommodityspaced = True } }
 
 collapsSpace :: Text -> Text
 collapsSpace = T.unwords . T.words . T.strip
