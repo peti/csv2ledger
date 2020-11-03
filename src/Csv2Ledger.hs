@@ -110,7 +110,7 @@ loadCsvFiles format files = do
   ts' <- M.forM (sortBy (filenameOrder format) files) $ \fn ->
     withFile fn ReadMode $ \h -> do
       hSetEncoding h (fileEncoding format)
-      _ <- M.replicateM (skipLines format) (hGetLine h)
+      replicateM_ (skipLines format) (hGetLine h)
       buf <- IO.hGetContents h
       case decodeCSV format (dropUtf8BOM (BS.fromString buf)) of
         Left err -> fail err
