@@ -1,6 +1,4 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE PackageImports #-}
 
 module Csv2Ledger
   ( FormatSpec(..), defaultFormatSpec, dropUtf8BOM, loadCsvFiles
@@ -10,8 +8,6 @@ module Csv2Ledger
   , simpleMain, pCurrency, parseAmount
   )
   where
-
-import "base-compat" Prelude.Compat
 
 import Control.Monad as M
 import Control.Monad.State.Strict

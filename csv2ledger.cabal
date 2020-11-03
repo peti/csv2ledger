@@ -6,7 +6,7 @@ license:       BSD3
 license-file:  LICENSE
 author:        Peter Simons
 maintainer:    simons@cryp.to
-tested-with:   GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.5, GHC == 8.8.4, GHC == 8.10.2
+tested-with:   GHC == 8.8.4 || == 8.10.2
 category:      Finance
 homepage:      https://github.com/peti/csv2ledger
 build-type:    Simple
@@ -16,9 +16,8 @@ library
   exposed-modules:  Csv2Ledger
                     Csv2Ledger.Camt
   hs-source-dirs:   src
-  build-depends:    base        < 5
+  build-depends:    base        > 4.13 && < 5
                   , Decimal
-                  , base-compat > 0.9
                   , bytestring
                   , cassava
                   , hledger-lib >= 1.19.1
@@ -30,7 +29,5 @@ library
                   , vector
   default-language: Haskell2010
   other-extensions: OverloadedStrings
-                    PackageImports
-                    NoImplicitPrelude
   ghc-options:      -Wall -Wcompat -Wincomplete-uni-patterns -Wincomplete-record-updates
                     -Wredundant-constraints
