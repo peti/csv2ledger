@@ -5,7 +5,7 @@ module Csv2Ledger
   , euro, postExpense, postIncome, postExpense', postIncome'
   , simplePosting, isIncomeTransaction, isExpenseTransaction
   , mkTag, (=~), postLiability, postLiability', collapsSpace
-  , simpleMain, pCurrency, parseAmount
+  , simpleMain, pCurrency, parseAmount, regexReplace'
   )
   where
 
@@ -131,3 +131,6 @@ collapsSpace = T.unwords . T.words . T.strip
 
 instance IsString Regexp where
   fromString = toRegexCI' . T.pack
+
+regexReplace' :: Regexp -> Replacement -> String -> String
+regexReplace' reg repl = either (error . show) id . regexReplace reg repl
