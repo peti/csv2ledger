@@ -15,10 +15,11 @@ import Data.ByteString.Lazy as BS ( ByteString, pack, stripPrefix )
 import Data.ByteString.Lazy.UTF8 as BS ( fromString )
 import Data.Decimal
 import Data.List ( nub, sortOn, sortBy )
-import Data.String ( IsString(..) )
 import Data.Maybe
+import Data.String ( IsString(..) )
 import Data.Text ( Text )
 import qualified Data.Text as T
+import qualified Data.Text.IO as T
 import Data.Vector as V ( Vector, toList )
 import Hledger.Data
 import Hledger.Read
@@ -114,7 +115,7 @@ loadCsvFiles format files = do
   return $ sortOn tdate (map (toTransaction format) (nub (concat ts')))
 
 simpleMain :: Eq a => FormatSpec a -> IO ()
-simpleMain fmt = getArgs >>= loadCsvFiles fmt >>= mapM_ (putStr . showTransactionUnelided)
+simpleMain fmt = getArgs >>= loadCsvFiles fmt >>= mapM_ (T.putStr . showTransaction)
 
 pCurrency :: String -> Text -> Text -> Amount
 pCurrency ctx curr amt = parseAmount ctx (curr <> " " <> amt)
@@ -129,4 +130,4 @@ collapsSpace :: Text -> Text
 collapsSpace = T.unwords . T.words . T.strip
 
 instance IsString Regexp where
-  fromString = toRegexCI'
+  fromString = toRegexCI' . T.pack

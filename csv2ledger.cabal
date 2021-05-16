@@ -12,6 +12,10 @@ homepage:      https://github.com/peti/csv2ledger
 build-type:    Simple
 cabal-version: >= 1.10
 
+source-repository head
+  type:     git
+  location: https://github.com/peti/csv2ledger
+
 library
   exposed-modules:  Csv2Ledger
                     Csv2Ledger.Camt
@@ -20,7 +24,7 @@ library
                   , Decimal
                   , bytestring
                   , cassava
-                  , hledger-lib >= 1.19.1
+                  , hledger-lib >= 1.21
                   , megaparsec
                   , mtl
                   , text
