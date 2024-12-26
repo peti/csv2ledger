@@ -54,10 +54,10 @@ dropUtf8BOM x = fromMaybe x (stripPrefix bom x)
 ----- Tools for implementing toTransaction
 
 euro :: Decimal -> Amount
-euro n = amount { acommodity = "EUR"
-                , aquantity = roundTo 2 n
-                , astyle = amountstyle { asprecision = Precision 2, ascommodityspaced = True }
-                }
+euro n = nullamt { acommodity = "EUR"
+                 , aquantity = roundTo 2 n
+                 , astyle = amountstyle { asprecision = Precision 2, ascommodityspaced = True }
+                 }
 
 postExpense :: AccountName -> Transaction -> Posting
 postExpense acc = postExpense' acc missingamt

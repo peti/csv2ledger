@@ -24,7 +24,7 @@ library
                   , Decimal
                   , bytestring
                   , cassava
-                  , hledger-lib >= 1.21
+                  , hledger-lib >= 1.27
                   , megaparsec
                   , mtl
                   , text
