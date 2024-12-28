@@ -112,7 +112,7 @@ loadCsvFiles format files = do
       case decodeCSV format (dropUtf8BOM (BS.fromString buf)) of
         Left err -> fail err
         Right rs -> return (V.toList rs)
-  return $ sortOn tdate (map (toTransaction format) (nub (concat ts')))
+  return $ nub $ sortOn tdate (map (toTransaction format) (nub (concat ts')))
 
 simpleMain :: Eq a => FormatSpec a -> IO ()
 simpleMain fmt = getArgs >>= loadCsvFiles fmt >>= mapM_ (T.putStr . showTransaction)
