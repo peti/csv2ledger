@@ -55,7 +55,7 @@ instance FromNamedRecord CAMT where
                           bic <- m .: "BIC (SWIFT-Code)"
                           betrag' <- m .: "Betrag"
                           waehrung <- m .: "Waehrung"
-                          let betrag = pCurrency (show m) waehrung betrag'
+                          let betrag = pCurrency (Prelude.show m) waehrung betrag'
                           info <- m .: "Info"
                           pure CAMT {..}
 
