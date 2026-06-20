@@ -3,7 +3,7 @@
 module Csv2Ledger
   ( FormatSpec(..), defaultFormatSpec, dropUtf8BOM, loadCsvFiles
   , euro, postExpense, postIncome, postExpense', postIncome'
-  , simplePosting, isIncomeTransaction, isExpenseTransaction
+  , isIncomeTransaction, isExpenseTransaction
   , mkTag, (=~), postLiability, postLiability', collapsSpace
   , simpleMain, pCurrency, parseAmount, regexReplace'
   )
@@ -64,7 +64,7 @@ postExpense acc = postExpense' acc missingamt
 
 postExpense' :: AccountName -> Amount -> Transaction -> Posting
 postExpense' acc amt t
-  | isExpenseTransaction t = simplePosting ("Ausgaben:" <> acc) amt
+  | isExpenseTransaction t = post ("Ausgaben:" <> acc) amt
   | otherwise              = error $ "invalid expense:\n" ++ show t
 
 postIncome :: AccountName -> Transaction -> Posting
@@ -72,20 +72,14 @@ postIncome acc = postIncome' acc missingamt
 
 postIncome' :: AccountName -> Amount -> Transaction -> Posting
 postIncome' acc amt t
-  | isIncomeTransaction t = simplePosting ("Einkommen:" <> acc) amt
+  | isIncomeTransaction t = post ("Einkommen:" <> acc) amt
   | otherwise             = error $ "invalid income:\n" ++ show t
-
-simplePosting :: AccountName -> Amount -> Posting
-simplePosting acc amt = nullposting
-  { pamount = if amt == missingamt then missingmixedamt else mixed [amt]
-  , paccount = acc
-  }
 
 postLiability :: AccountName -> Posting
 postLiability acc = postLiability' acc missingamt
 
 postLiability' :: AccountName -> Amount -> Posting
-postLiability' acc = simplePosting ("Schulden:" <> acc)
+postLiability' acc = post ("Schulden:" <> acc)
 
 isIncomeTransaction :: Transaction -> Bool
 isIncomeTransaction = not . isExpenseTransaction
